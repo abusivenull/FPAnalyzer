@@ -1,0 +1,19 @@
+Requisitos -> Nodos
+Tipos de función compartidas -> Aristas con pesos
+
+Si un requisito se selecciona para ser desarrollado -> su correspondiente nodo se activa.
+	Los pesos de las aristas de ese nodo se mantienen constantes/se ponen a 0.
+	Los pesos de los nodos adyacentes disminuyen en X, donde X es el peso de la arista que une el nodo activado con el nodo adyacente.
+	Los pesos de las aristas de los nodos adycentes 
+
+Los nodos ya tienen el peso precalculado e indicado por el usuario al momento de su creación.
+
+
+
+Casos a considerar:
+- Los pesos de las aristas de un nodo pueden ser distintos entre si.
+
+
+
+Cosas que se podrían incluir:
+- Una visión donde solo se muestren los requisitos que utilizan un tipo de función junto con sus aristas.
