@@ -1,19 +1,52 @@
-Requisitos -> Nodos
+Requisitos -> Nodos con pesos
 Tipos de función compartidas -> Aristas con pesos
+Los nodos han de ser creados con la cantidad de puntos de función que se supone que necesitan en total.
+Los nodos ya tienen el peso precalculado e indicado por el usuario al momento de su creación.
+
+El peso de un nodo representa la cantidad de Puntos de Función necesarios para implementar ese requisito, descontando los Puntos de Función que ya hayan sido implementados al seleccionar otros requisitos previamente.
+El peso de una arista representa la cantidad de Puntos de Función que comparten entre sí los nodos a los que unen y que aún no han sido implementados por ningún otro requisito.
 
 Si un requisito se selecciona para ser desarrollado -> su correspondiente nodo se activa.
-	Los pesos de las aristas de ese nodo se mantienen constantes/se ponen a 0.
+	Los pesos de las aristas de ese nodo (se mantienen constantes) se ponen a 0.
 	Los pesos de los nodos adyacentes disminuyen en X, donde X es el peso de la arista que une el nodo activado con el nodo adyacente.
-	Los pesos de las aristas de los nodos adycentes 
+	Los pesos de las aristas de los nodos adycentes disminuyen en X, donde X es la suma de los pesos de todos los tipos de función que implementa el nodo seleccionado
 
-Los nodos ya tienen el peso precalculado e indicado por el usuario al momento de su creación.
+El programa mostrará el total de Puntos de Función necesarios para implementar todos los requisitos seleccionados. Para ello el programa calculará el total de Puntos de Función a implementar cuando:
+	Se seleccione/deseleccione un requisito.
+	El peso de un requisito seleccionado cambie.
 
 
 
 Casos a considerar:
 - Los pesos de las aristas de un nodo pueden ser distintos entre si.
+- Casos en los que se actualizan los nodos de un tipo de función:
+	Si se añade un nodo activado a un tipo de función y es el único activado.
+	Si se elimina un nodo de un tipo de función y este está desactivado
+	Si cambia el estado de un nodo
 
+- Si se desactiva un nodo de una red que:
+	- Era el nodo que lo implementaba -> Su peso no se modifica. Se busca un nuevo nodo que lo sustituya.
+	- No era el nodo que lo implementaba -> Su peso debe incrementar.
+
+- Si se elimina un nodo de una red que:
+	- Estaba activo y:
+		- Era el nodo que lo implementaba -> Su peso no se modifica
+		- No era el nodo que lo implementaba -> Su peso debe incrementar
+	- No estaba activo:
+		- La red estaba activa -> Su peso debe incrementar
+		- La red no estaba activa -> Su peso no se modifica
+
+- Si un nodo que pertenece a una red donde todos los demás nodos están desactivados:
+	Se activa -> Su peso no se modifica y el de los demás disminuye.
+	Se desactiva -> Su peso no se modifica y el de los demás aumenta.
+- Si un nodo que pertenece a una red donde hay otros nodos que están activados:
+	Se activa -> Su peso no se modifica y el de los demás tampoco.
+	Se desactiva -> 
 
 
 Cosas que se podrían incluir:
+- La posibilidad de alternar entre dos modos de visualización:
+	1: Los pesos de las aristas del grafo muestran la cantidad de Puntos de Función que comparten entre sí 2 requisitos y que aún están por implementar (Modo de visualización estándar).
+	2: Los pesos de las aristas del grafo muestran la cantidad de Puntos de Función que comparten entre sí 2 requisitos, independientemente de los que estén implementados.
 - Una visión donde solo se muestren los requisitos que utilizan un tipo de función junto con sus aristas.
+- Resetear los Puntos de Función totales a 0 aunque haya requisitos seleccionados para simular que ya están hechos y así poder reutilizar el mismo gráfico para realizar el análisis de Puntos de Función para otro ciclo de desarrollo (donde se seleccionarán requisitos que aún no hayan sido seleccionados. Estos serán los requisitos a desarrollar en el nuevo ciclo de desarrollo).
