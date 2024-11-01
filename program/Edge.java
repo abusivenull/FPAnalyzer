@@ -9,37 +9,22 @@ public class Edge{
 	int weight = 0;
 	List<TypeOfFunction> functions;
 	
-	public Edge(String name, Node node1, Node node2, int weight) throws Exception{		//Tener cuidado con si se reutiliza el nombre de un tipo de función existente con un peso distinto
+	// Creates an edge to link two nodes using an existing function
+	public Edge(TypeOfFunction function, Node node1, Node node2){
 		this.node1 = node1;
 		this.node2 = node2;
 		this.functions = new ArrayList<TypeOfFunction>(10);
-		int i = 0;
-		while(i < FPAnalyzer.allFunctions.size() && !FPAnalyzer.allFunctions.get(i).name.equals(name)){
-			++i;
-		}
-		if(i < FPAnalyzer.allFunctions.size()){
-			TypeOfFunction function = FPAnalyzer.allFunctions.get(i);
-			this.functions.add(function);
-			//FPAnalyzer.allFunctions.get(i).addNode(node1);		// No importa si el nodo ya estaba
-			//FPAnalyzer.allFunctions.get(i).addNode(node2);		// No importa si el nodo ya estaba
-			this.weight = this.weight;
-			node1.addEdge(this, function);
-			node2.addEdge(this, function);
-		}
-		else{
-			TypeOfFunction function = new TypeOfFunction(name, weight, node1, node2, this);
-			this.functions.add(function);
-			this.weight = this.weight + weight;
-			node1.addEdge(this, function);
-			node2.addEdge(this, function);
-		}
+		this.functions.add(function);
+		//FPAnalyzer.allFunctions.get(i).addNode(node1);		// No importa si el nodo ya estaba
+		//FPAnalyzer.allFunctions.get(i).addNode(node2);		// No importa si el nodo ya estaba
 	}
 	
 	// Adds shared types of functions between the same pair of nodes
 	public void addTypeOfFunction(TypeOfFunction function){		// Tener cuidado con si se añade el mismo tipo de función
 		functions.add(function);
-		node1.functions.add(function);
-		node2.functions.add(function);
+		weight += function.weight;
+		node1.addFunction(function);
+		node2.addFunction(function);
 	}
 	
 	// Adjust the other edge's node's weight.
@@ -60,5 +45,10 @@ public class Edge{
 			//this.weight
 		}
 		System.out.println("El nombre de quien me ha invocado es " + node.name);
+	}
+	
+	// Deletes this edge, updating its nodes
+	public void delete(){
+		// Recalculate all affected nodes values
 	}
 }

@@ -41,7 +41,7 @@ public class TypeOfFunction{
 	}
 	
 	// Creates a type of function with two nodes. Used when two nodes are connected mannualy.
-	public TypeOfFunction(String name, int weight, Node node1, Node node2, Edge edge) throws Exception{
+	public TypeOfFunction(String name, int weight, Node node1, Node node2) throws Exception{
 		System.out.println("Created with two nodes");
 		if (weight < 0){
 			throw new Exception();
@@ -52,7 +52,6 @@ public class TypeOfFunction{
 		this.edges = new ArrayList<Edge>(10);
 		addNode(node1);
 		addNode(node2);
-		this.edges.add(edge);
 		System.out.println("Reached the end");
 		debugTypeOfFunction();
 	}
@@ -71,7 +70,10 @@ public class TypeOfFunction{
 	
 	// Adds a node that uses this type of function.
 	public boolean addNode(Node node){
-		boolean wasAdded = nodes.add(node);
+		if (nodes.contains(node)){
+			return false;
+		}
+		nodes.add(node);
 		if (implementingNode != null){
 			node.addWeight(-this.weight);
 			if (node.isSelected){
@@ -101,7 +103,7 @@ public class TypeOfFunction{
 			node.addWeight(-this.weight);
 		}
 		*/
-		return wasAdded;
+		return true;
 	}
 	
 	// Removes a node that used this type of function.
@@ -193,17 +195,33 @@ public class TypeOfFunction{
 		return numberOfNodesUpdated;
 	}
 	
+	// Adds a not known edge
+	public boolean addEdge(Edge edge){
+		if (this.edges.contains(edge)){
+			return false;
+		}
+		this.edges.add(edge);
+		return true;
+	}
+	
+	// Removes an edge
+	public void removeEdge(){
+		
+	}
+	
+	public void delete(){
+		// Update/erase all affected edges
+	}
+	
 	private void debugTypeOfFunction(){
 		System.out.println("\tName = " + this.name);
 		System.out.println("\tWeight = " + this.weight);
 		for(int i = 0; i < nodes.size(); ++i){
 			System.out.println("\t" + nodes.get(i).name);
 		}
-		/*
 		for(int i = 0; i < edges.size(); ++i){
 			System.out.println("\t[" + edges.get(i).node1.name + ", " + edges.get(i).node2.name + "]");
 		}
-		*/
 		if(implementingNode == null){
 			System.out.println("\timplementingNode = " + this.implementingNode);
 		}

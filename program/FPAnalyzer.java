@@ -15,6 +15,7 @@ public class FPAnalyzer{
 	
 	// Creates a node.
 	public static Node createNode(String name, int weight){
+		// Do graphical stuff
 		Node node = new Node(name, weight);
 		allNodes.add(node);
 		return node;
@@ -23,31 +24,61 @@ public class FPAnalyzer{
 	// Deletes a node
 	public static boolean deleteNode(Node node){
 		// Do graphical stuff
-		if (node.isSelected){
-			// Recalculate all adjacent nodes values
-		}
-		// Update/erase all affected edges
+		node.delete();
 		return allNodes.remove(node);
 	}
 	
-	// Creates an edge between two nodes.
-	public static Edge createEdge(String name, Node node1, Node node2, int weight) throws Exception{
-		Edge edge = new Edge(name, node1, node2, weight);
-		node1.edges.add(edge);
-		node2.edges.add(edge);
+	public static TypeOfFunction createTypeOfFunction(String functionName, int functionWeight, Node node1, Node node2) throws Exception{
+		TypeOfFunction function = new TypeOfFunction(functionName, functionWeight, node1, node2);
+		allFunctions.add(function);
+		return function;
+	}
+	
+	// Deletes a function
+	public static boolean deleteTypeOfFunction(TypeOfFunction function){
+		function.delete();
+		return allFunctions.remove(function);
+	}
+	
+	// Creates an edge between two nodes with a function.
+	public static Edge createEdge(TypeOfFunction function, Node node1, Node node2) throws Exception{
+		// Do graphical stuff
+		Edge edge = new Edge(function, node1, node2);
+		node1.addEdge(edge);
+		node2.addEdge(edge);
+		node1.addFunction(function);
+		node2.addFunction(function);
+		function.addNode(node1);
+		function.addNode(node2);
+		function.addEdge(edge);
 		allEdges.add(edge);
 		return edge;
 	}
 	
 	public static boolean deleteEdge(Edge edge){
 		// Do graphical stuff
-		// Recalculate all affected nodes values
+		edge.delete();
 		return allEdges.remove(edge);
 	}
 	
 	public static void updateTotal(int value){
 		total += value;
-		System.out.println("Nuevo total: " + total);
+	}
+	
+	/*
+	public static void showFunctions(){
+		for (int i = 0; i < allFunctions.size(); ++i){
+			allFunctions.get(i).debugTypeOfFunction();
+		}
+	}
+	*/
+	
+	public static void showNodes(){
+		System.out.println("\nActual state of the graph:");
+		System.out.println("Total = " + total);
+		for(int i = 0; i < allNodes.size(); ++i){
+			System.out.println(allNodes.get(i));
+		}
 	}
 	
 	public static void main(String[] args) throws Exception{

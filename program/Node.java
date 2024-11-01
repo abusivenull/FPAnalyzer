@@ -1,5 +1,6 @@
 package program;
 
+import java.lang.StringBuilder;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -25,16 +26,16 @@ public class Node{
 		}
 	}
 	
-	/*
-	public void addFunction(TypeOfFunction function){
-		this.functions.add(function);
-	}
-	*/
-	
 	// Connects this node to an edge
-	public void addEdge(Edge edge, TypeOfFunction function){
+	public void addEdge(Edge edge){
 		this.edges.add(edge);
-		this.functions.add(function);
+	}
+	
+	// Adds a function to this node
+	public void addFunction(TypeOfFunction function){
+		if (!functions.contains(function)){
+			this.functions.add(function);
+		}
 	}
 	
 	// Changes node's state
@@ -56,6 +57,18 @@ public class Node{
 		*/
 	}
 	
+	// Deletes this node
+	public void delete(){
+		for (int i = 0; i < functions.size(); ++i){
+			functions.get(i).removeNode(this);
+		}
+		this.functions = null;
+		for (int i = 0; i < edges.size(); ++i){
+			edges.get(i).delete();
+		}
+		this.edges = null;
+	}
+	
 	// Shows all edges
 	public void showAllEdges(){
 		System.out.println("My shared function types are:");
@@ -64,5 +77,13 @@ public class Node{
 				System.out.println(edges.get(i).functions.get(j).name);
 			}
 		}
+	}
+	
+	public String toString(){
+		StringBuilder builder = new StringBuilder(this.name + "\nWeight: " + this.weight + "\nSelected: " + this.isSelected + "\nUses functions:\n");
+		for(int i = 0; i < this.functions.size(); ++i){
+			builder.append(functions.get(i).name + "\n");
+		}
+		return builder.toString();
 	}
 }
